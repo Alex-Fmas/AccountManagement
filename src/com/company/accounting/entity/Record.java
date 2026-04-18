@@ -1,4 +1,4 @@
-package com.company.accouting.entity;
+package com.company.accounting.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,8 +17,7 @@ public class Record {
     public Record() {
     }
 
-    public Record(int id, LocalDate date, String type, BigDecimal amount, String category, String note) {
-        this.id = id;
+    public Record(LocalDate date, String type, BigDecimal amount, String category, String note) {
         this.date = date;
         this.type = type;
         this.amount = amount;
@@ -79,9 +78,9 @@ public class Record {
 
         return id + "\t"
                 + date + "\t"
-                + type + "\t"
+                + type + "\t\t"
                 + amount + "\t"
-                + category + "\t"
+                + category + "\t\t"
                 + note;
     }
 
