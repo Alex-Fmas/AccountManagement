@@ -17,7 +17,8 @@ public class Record {
     public Record() {
     }
 
-    public Record(LocalDate date, String type, BigDecimal amount, String category, String note) {
+    public Record(int id, LocalDate date, String type, BigDecimal amount, String category, String note) {
+        this.id = id;
         this.date = date;
         this.type = type;
         this.amount = amount;
