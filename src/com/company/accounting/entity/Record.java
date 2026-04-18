@@ -6,7 +6,7 @@ import java.time.LocalDate;
 public class Record {
     private int id;                     // id
     private LocalDate date;             // 日期
-    private String type;                // 类型
+    private RecordType type;            // 类型
     private BigDecimal amount;          // 金额
     private String category;            // 分类
     private String note;                // 备注
@@ -17,7 +17,7 @@ public class Record {
     public Record() {
     }
 
-    public Record(LocalDate date, String type, BigDecimal amount, String category, String note) {
+    public Record(LocalDate date, RecordType type, BigDecimal amount, String category, String note) {
         this.date = date;
         this.type = type;
         this.amount = amount;
@@ -65,11 +65,11 @@ public class Record {
         this.note = note;
     }
 
-    public String getType() {
+    public RecordType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(RecordType type) {
         this.type = type;
     }
 

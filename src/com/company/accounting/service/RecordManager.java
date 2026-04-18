@@ -1,7 +1,9 @@
 package com.company.accounting.service;
 
 import com.company.accounting.entity.Record;
+import com.company.accounting.entity.RecordType;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -72,4 +74,34 @@ public class RecordManager {
     public int getRecordCount() {
         return records.size();
     }
+    /*
+    * 统计
+    * */
+    // 总收入
+    public BigDecimal getTotalIncome() {
+        BigDecimal total = BigDecimal.ZERO;
+        for(Record record : records) {
+            if (record.getType() == RecordType.INCOME) {
+                total = total.add(record.getAmount());
+            }
+        }
+        return total;
+    }
+    // 总支出
+    public BigDecimal getTotalExpense() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (Record record : records) {
+            if (record.getType() == RecordType.EXPENSE) {
+                total = total.add(record.getAmount());
+            }
+        }
+        return total;
+    }
+    // 总额
+    public BigDecimal getBalance() {
+        BigDecimal income = getTotalIncome();
+        BigDecimal expense = getTotalExpense();
+        return income.subtract(expense);
+    }
+
 }
