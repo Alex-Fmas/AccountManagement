@@ -78,7 +78,7 @@ public class Record {
 
         return id + "\t"
                 + date + "\t"
-                + type + "\t\t"
+                + type.getText() + "\t"
                 + amount + "\t"
                 + category + "\t\t"
                 + note;

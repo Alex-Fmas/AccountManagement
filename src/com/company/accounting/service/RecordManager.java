@@ -4,12 +4,13 @@ import com.company.accounting.entity.Record;
 import com.company.accounting.entity.RecordType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class RecordManager {
-    private List<Record> records;           // 存储记录
+    private final List<Record> records;           // 存储记录
     private int nextId;                     // 下一个生成ID
 
     public RecordManager() {
@@ -27,13 +28,17 @@ public class RecordManager {
     /*
     * 遍历
     * */
-    public void listRecords() {
-        if (records.isEmpty()) {
+    public void printRecords() {
+        printRecords(records);
+    }
+
+    public void printRecords(List<Record> list) {
+        if (list.isEmpty()) {
             System.out.println("暂无记录");
             return;
         }
         System.out.println("ID\t日期\t\t\t类型\t\t金额\t\t类别\t\t备注");
-        for (Record record : records) {
+        for (Record record : list) {
             System.out.println(record);
         }
     }
@@ -54,13 +59,50 @@ public class RecordManager {
     /*
     * 根据ID查找记录
     * */
-    public Record findRecordById(int id) {
+    public List<Record> findRecordById(int id) {
+        List<Record> list = new ArrayList<>();
         for (Record record : records) {
             if (record.getId() == id) {
-                return record;
+                list.add(record);
             }
         }
-        return null;
+        return list;
+    }
+    /*
+     * 根据日期查找记录
+     * */
+    public List<Record> searchByDate(LocalDate localDate) {
+        List<Record> list = new ArrayList<>();
+        for(Record record : records) {
+            if (record.getDate().equals(localDate)){
+                list.add(record);
+            }
+        }
+        return list;
+    }
+    /*
+     * 根据分类查找记录
+     * */
+    public List<Record> searchByCategory(String category) {
+        List<Record> list = new ArrayList<>();
+        for (Record record : records) {
+            if (record.getCategory().equals(category)) {
+                list.add(record);
+            }
+        }
+        return list;
+    }
+    /*
+     * 根据类型查找记录
+     * */
+    public List<Record> searchByType(RecordType recordType) {
+        List<Record> list = new ArrayList<>();
+        for(Record record : records) {
+            if (record.getType().equals(recordType)) {
+                list.add(record);
+            }
+        }
+        return list;
     }
     /*
     * 获取所有记录

@@ -6,6 +6,8 @@ import com.company.accounting.service.RecordManager;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainApp {
@@ -31,9 +33,10 @@ public class MainApp {
             switch (choice) {
                 case 1 -> addRecord(RecordType.INCOME);
                 case 2 -> addRecord(RecordType.EXPENSE);
-                case 3 -> manager.listRecords();
+                case 3 -> manager.printRecords();
                 case 4 -> deleteRecord();
                 case 5 -> showStatistics();
+                case 6 -> showSearchMenu();
                 case 0 -> {
                     System.out.println("系统退出");
                     return; // 注意：这里的 return 依然有效，用于退出方法
@@ -57,6 +60,7 @@ public class MainApp {
         System.out.println("3. 查看所有记录");
         System.out.println("4. 删除记录");
         System.out.println("5. 查看统计报表");
+        System.out.println("6. 查询记录");
         System.out.println("0. 退出系统");
         System.out.print("请选择：");
 
@@ -74,7 +78,7 @@ public class MainApp {
         BigDecimal amount =
                 new BigDecimal(amountStr); // 必须用字符串
 
-        System.out.println("请输入类别：");
+        System.out.println("请输入分类：");
 
         String category = scanner.nextLine();
 
@@ -127,11 +131,12 @@ public class MainApp {
         }
 
     }
-
-
+/*
+*
+*      +++++++++++子菜单++++++++++++
+*
+* */
     // ==== 统计报表 ====
-
-
     private static void showStatistics() {
 
         BigDecimal income =
@@ -152,5 +157,110 @@ public class MainApp {
 
         System.out.println("当前余额：" + balance);
 
+    }
+    // ==== 查询 =====
+    private static void showSearchMenu() {
+
+        System.out.println();
+        System.out.println("====== 查询菜单 ======");
+
+        System.out.println("1. 按日期查询");
+        System.out.println("2. 按分类查询");
+        System.out.println("3. 按类型查询（收入，支出）");
+
+        System.out.print("请选择：");
+
+        int choice = scanner.nextInt();
+
+        scanner.nextLine();
+
+        switch (choice) {
+
+            case 1 -> searchByDate();
+
+            case 2 -> searchByCategory();
+
+            case 3 -> searchByType();
+
+            default -> System.out.println("无效选择");
+        }
+
+    }
+    private static void searchByDate() {
+        LocalDate data = null;
+
+        while (true) {
+            System.out.println("请输入日期（例如 2026-04-19）：");
+            String dateStr = scanner.nextLine().trim();
+
+            if (dateStr.isEmpty()) {
+                System.out.println("输出不能为空，请重新输入！");
+            }
+
+            try {
+                data = LocalDate.parse(dateStr);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("日期格式不正确，请输入yyyy-MM-dd");
+            }
+        }
+
+        try{
+            List<Record> list = manager.searchByDate(data);
+            manager.printRecords(list);
+        } catch (Exception e) {
+            System.out.println("查询失败");
+        }
+
+    }
+    private static void searchByCategory() {
+
+        System.out.println("请输入分类：");
+
+        String category =
+                scanner.nextLine();
+
+        List<Record> result =
+                manager.searchByCategory(category);
+
+        manager.printRecords(result);
+
+    }
+    private static void searchByType() {
+
+        System.out.println("请选择类型：");
+        System.out.println(RecordType.INCOME.getText());
+        System.out.println(RecordType.EXPENSE.getText());
+
+        RecordType type = null;
+        boolean running = true;
+
+        while (running) {
+            try{
+                String input = scanner.nextLine().trim();
+                int choice = Integer.parseInt(input);
+
+                switch (choice) {
+                    case 1 -> {
+                        type = RecordType.INCOME;
+                        running = false;
+                    }
+                    case 2 -> {
+                        type = RecordType.EXPENSE;
+                        running = false;
+                    }
+                    default -> System.out.println("无效选择");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("请输入数字");
+            }
+        }
+
+        try {
+            List<Record> result = manager.searchByType(type);
+            manager.printRecords(result);
+        } catch (Exception e) {
+            System.out.println("查询失败" + e.getMessage());
+        }
     }
 }
