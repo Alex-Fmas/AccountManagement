@@ -25,6 +25,15 @@ public class Record {
         this.note = note;
     }
 
+    public Record(int id,LocalDate date, RecordType type, BigDecimal amount, String category, String note) {
+        this.id = id;
+        this.date = date;
+        this.type = type;
+        this.amount = amount;
+        this.category = category;
+        this.note = note;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
