@@ -13,6 +13,12 @@ public class FileManager {
     private static final String FILE_NAME = "data/records.txt";
 
     public static void saveToFile(List<Record> records) {
+        try {
+            File file = new File(FILE_NAME);
+            file.getParentFile().mkdirs();
+        } catch (Exception e) {
+        }
+
         try (
                 BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
         ){
@@ -39,6 +45,12 @@ public class FileManager {
 
     public static List<Record> loadFromFile() {
         List<Record> records = new ArrayList<>();
+
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return records;
+        }
+
         try (
                 BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
 
@@ -49,7 +61,7 @@ public class FileManager {
                 lineNumber++;
                 String[] parts = line.split(",");
 
-                if (line.length() < 6){
+                if (parts.length < 6){
                     System.err.printf("第%d行格式错误，字段数量不足6个，跳过该行%n", lineNumber);
                     continue;
                 }

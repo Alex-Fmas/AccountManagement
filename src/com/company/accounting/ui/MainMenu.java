@@ -2,6 +2,7 @@ package com.company.accounting.ui;
 
 import com.company.accounting.entity.RecordType;
 import com.company.accounting.service.RecordManager;
+import com.company.accounting.util.FileManager;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -32,6 +33,7 @@ public class MainMenu {
                 case 5 -> showStatistics();                             // 查看统计报表
                 case 6 -> searchMenu.showSearchMenu();                  // 查询记录
                 case 0 -> {                                             // 退出
+                    FileManager.saveToFile(manager.getRecords());
                     System.out.println("系统退出");
                     running = false; // 注意：这里的 return 依然有效，用于退出方法
                 }

@@ -2,6 +2,7 @@ package com.company.accounting.service;
 
 import com.company.accounting.entity.Record;
 import com.company.accounting.entity.RecordType;
+import com.company.accounting.util.FileManager;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,16 +15,31 @@ public class RecordManager {
     private int nextId;                     // 下一个生成ID
 
     public RecordManager() {
-        records = new ArrayList<>();
+        records = FileManager.loadFromFile();
         nextId = 1;     // 首个ID
     }
+
+    public int calculateNextId() {
+        if (records.isEmpty()) {
+            return 1;
+        }
+        return records.stream()
+                .mapToInt(Record::getId)
+                .max()
+                .getAsInt() + 1;
+    }
+
+    public List<Record> getRecords() {
+        return new ArrayList<>(records);
+    }
+
     /*
     * 添加记录
     * */
     public void addRecord(Record record) {
         record.setId(nextId);
-        nextId++;
         records.add(record);
+        nextId++;
     }
     /*
     * 遍历
