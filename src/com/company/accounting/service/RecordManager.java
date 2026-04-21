@@ -16,7 +16,7 @@ public class RecordManager {
 
     public RecordManager() {
         records = FileManager.loadFromFile();
-        nextId = 1;     // 首个ID
+        nextId = calculateNextId();     // 首个ID
     }
 
     public int calculateNextId() {

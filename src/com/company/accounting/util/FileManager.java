@@ -15,22 +15,17 @@ public class FileManager {
     public static void saveToFile(List<Record> records) {
         try {
             File file = new File(FILE_NAME);
-            file.getParentFile().mkdirs();
-        } catch (Exception e) {
-        }
+            File parent = file.getParentFile();
+            if (parent != null && !parent.exists()) {
+                parent.mkdirs();
+            }
+        } catch (Exception e) {  e.printStackTrace(); }
 
         try (
                 BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
         ){
             for(Record record : records) {
-                String line =
-                        record.getId() + "," +
-                        record.getDate() + "," +
-                        record.getType() + "," +
-                        record.getAmount() + "," +
-                        record.getCategory() + "," +
-                        record.getnote();
-
+                String line = record.toFileString();
                 writer.write(line);
                 writer.newLine();
             }
